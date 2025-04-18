@@ -14,8 +14,7 @@ final class MainViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    //MARK: UI 컴포넌트
-    
+    // MARK: UI 컴포넌트
     private let startButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("시작하기", for: .normal)
@@ -26,14 +25,14 @@ final class MainViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
         tapButton()
     }
     
-    //MARK: UI 제약조건
-
+    // MARK: UI 제약조건
     private func setUp() {
         view.backgroundColor = .white
         
@@ -46,13 +45,24 @@ final class MainViewController: UIViewController {
         }
     }
     
-    //MARK: 버튼 탭 동작
-    
+    // MARK: 버튼 탭 동작
     private func tapButton() {
         startButton.rx.tap
-            .subscribe(onNext: {
-                print("test")
+            .subscribe(onNext: { [weak self] _ in
+                self?.isAuthenticated()
             }).disposed(by: disposeBag)
+    }
+    
+    // TODO: 회원/비회원 판단 -> 로그인정보 UserDefaults
+    private func isAuthenticated() {
+        
+        if true { // 비회원
+            let signUpVC = SignUpViewController()
+            navigationController?.setViewControllers([signUpVC], animated: false)
+        } else { // 회원
+            let loginSuccessVC = LoginSuccessViewController()
+            navigationController?.setViewControllers([loginSuccessVC], animated: false)
+        }
     }
     
 }

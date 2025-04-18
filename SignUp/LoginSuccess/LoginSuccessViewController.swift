@@ -1,5 +1,5 @@
 //
-//  SignUpViewController.swift
+//  LoginSuccessViewController.swift
 //  SignUp
 //
 //  Created by 안준경 on 4/18/25.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 
-final class SignUpViewController: UIViewController {
+final class LoginSuccessViewController: UIViewController {
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
