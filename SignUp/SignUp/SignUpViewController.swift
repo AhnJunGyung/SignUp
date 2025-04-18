@@ -11,15 +11,27 @@ import RxSwift
 
 final class SignUpViewController: UIViewController {
     
-    // MARK: - Life Cycle
+    private let signUpView = SignUpView()
+    private let disposeBag = DisposeBag()
+    
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUp()
+        view = signUpView
+        tapSignUpButton()
     }
     
-    // MARK: UI 제약조건
-    private func setUp(){
-        view.backgroundColor = .white
+    // MARK: 회원가입
+    private func signUp() {
+        let loginSuccessVC = LoginSuccessViewController(name: "회원")
+        navigationController?.setViewControllers([loginSuccessVC], animated: false)
     }
     
+    // MARK: 회원가입 버튼 탭
+    private func tapSignUpButton() {
+        signUpView.signUpButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.signUp()
+            }).disposed(by: disposeBag)
+    }
 }

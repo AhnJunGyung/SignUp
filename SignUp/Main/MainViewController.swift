@@ -18,14 +18,14 @@ final class MainViewController: UIViewController {
     private let startButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("시작하기", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 18)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
         return button
     }()
     
-    // MARK: - Life Cycle
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
@@ -39,9 +39,10 @@ final class MainViewController: UIViewController {
         view.addSubview(startButton)
         
         startButton.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-            $0.width.equalTo(150)
-            $0.height.equalTo(50)
+            $0.bottom.equalToSuperview().inset(150)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(140)
+            $0.height.equalTo(40)
         }
     }
     
@@ -55,12 +56,11 @@ final class MainViewController: UIViewController {
     
     // TODO: 회원/비회원 판단 -> 로그인정보 UserDefaults
     private func isAuthenticated() {
-        
         if true { // 비회원
             let signUpVC = SignUpViewController()
             navigationController?.setViewControllers([signUpVC], animated: false)
         } else { // 회원
-            let loginSuccessVC = LoginSuccessViewController()
+            let loginSuccessVC = LoginSuccessViewController(name: "회원")
             navigationController?.setViewControllers([loginSuccessVC], animated: false)
         }
     }
