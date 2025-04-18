@@ -29,9 +29,10 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        tapButton()
     }
     
-    //MARK: UI 세팅
+    //MARK: UI 제약조건
 
     private func setUp() {
         view.backgroundColor = .white
@@ -45,10 +46,12 @@ final class MainViewController: UIViewController {
         }
     }
     
+    //MARK: 버튼 탭 동작
+    
     private func tapButton() {
         startButton.rx.tap
             .subscribe(onNext: {
-                
+                print("test")
             }).disposed(by: disposeBag)
     }
     
