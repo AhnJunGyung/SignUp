@@ -29,7 +29,7 @@ final class LoginSuccessView: UIView {
         return button
     }()
     
-    let resignButton: UIButton = {
+    let withdrawButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("회원탈퇴", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
@@ -56,7 +56,7 @@ final class LoginSuccessView: UIView {
         
         [titleLabel,
          logoutButton,
-         resignButton
+         withdrawButton
         ].forEach {
             addSubview($0)
         }
@@ -78,7 +78,7 @@ final class LoginSuccessView: UIView {
         }
 
         // resignButton
-        resignButton.snp.makeConstraints {
+        withdrawButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(150)
             $0.leading.equalTo(self.snp.centerX).offset(20)
             $0.width.equalTo(140)

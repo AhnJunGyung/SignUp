@@ -32,8 +32,8 @@ final class SignUpViewController: UIViewController {
                                 password: password,
                                 nickname: nickname)
         
-        let signUpDataService = SignUpDataService()
-        signUpDataService.saveUser(userData: userData)
+        let userDataService = UserDataService()
+        userDataService.saveUser(userData: userData)
         
         loginSuccess(userdata: userData)
     }

@@ -12,15 +12,17 @@ import RxSwift
 final class LoginSuccessViewController: UIViewController {
     
     private let loginSuccessView: LoginSuccessView?
+    private let loginUser: UserData?
     private let disposeBag = DisposeBag()
     
     // MARK: initializer
     init(userData: UserData) {
+        self.loginUser = userData
         loginSuccessView = LoginSuccessView(nickname: userData.nickname)
         super.init(nibName: nil, bundle: nil)
         
         //fetch 테스트
-        let dataService = SignUpDataService()
+        let dataService = UserDataService()
         let user = dataService.fetchUser(email: userData.email)
         print(user!)
     }
@@ -34,6 +36,7 @@ final class LoginSuccessViewController: UIViewController {
         super.viewDidLoad()
         view = loginSuccessView
         tapLogoutButton()
+        withdrawButton()
     }
     
     // MARK: 로그아웃 버튼 탭
@@ -49,6 +52,26 @@ final class LoginSuccessViewController: UIViewController {
     private func logout() {
         let mainVC = MainViewController()
         navigationController?.setViewControllers([mainVC], animated: false)
+    }
+    
+    // MARK: 회원탈퇴 버튼 탭
+    private func withdrawButton() {
+        loginSuccessView?.withdrawButton.rx
+            .tap
+            .subscribe(onNext: { [weak self] in
+                self?.withdraw()
+            }).disposed(by: disposeBag)
+    }
+    
+    // MARK: 회원탈퇴
+    private func withdraw() {
+        let userDataService = UserDataService()
+        
+        guard let email = loginUser?.email else {
+            return
+        }
+        
+        userDataService.deleteUser(email: email)
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  SignUpDataService.swift
+//  UserDataService.swift
 //  SignUp
 //
 //  Created by 안준경 on 4/19/25.
@@ -8,17 +8,17 @@
 import Foundation
 import CoreData
 
-final class SignUpDataService {
+final class UserDataService {
     
-    private let persistentContainer: NSPersistentContainer
+    private let container: NSPersistentContainer
     
     var context: NSManagedObjectContext {
-        return persistentContainer.viewContext
+        return container.viewContext
     }
     
     init() {
-        self.persistentContainer = NSPersistentContainer(name: "UserData")
-        self.persistentContainer.loadPersistentStores { _, error in
+        self.container = NSPersistentContainer(name: "UserData")
+        self.container.loadPersistentStores { _, error in
             if let error = error {
                 fatalError(error.localizedDescription)
             }
@@ -61,15 +61,37 @@ final class SignUpDataService {
     }
     
     // MARK: Delete UserData
-    func deleteUser() {
+    func deleteUser(email: String) {
         
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: UserEntity.fetchRequest())
+        let request = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", email)
+        request.fetchLimit = 1
         
         do {
-            try persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: persistentContainer.viewContext)
+            if let user = try context.fetch(request).first {
+                context.delete(user)
+                try context.save()
+            }
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func fetchAllUsers() -> [UserData] {
+        let fetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results.map { entity in
+                UserData(
+                    email: entity.email ?? "",
+                    password: entity.password ?? "",
+                    nickname: entity.nickname ?? ""
+                )
+            }
+        } catch {
+            print("❌ Failed to fetch users: \(error)")
+            return []
+        }
     }
 }
