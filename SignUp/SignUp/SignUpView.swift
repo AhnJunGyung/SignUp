@@ -96,7 +96,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    private let nickname: UITextField = {
+    let nickname: UITextField = {
         let textField = UITextField()
         textField.placeholder = "닉네임을 입력하세요"
         textField.font = .systemFont(ofSize: 14)
@@ -152,7 +152,6 @@ final class SignUpView: UIView {
             addSubview($0)
         }
         
-        // titleLabel
         titleLabel.snp.makeConstraints {
             $0.centerX.equalTo(safeAreaLayoutGuide)
             $0.top.equalTo(safeAreaLayoutGuide.snp.top)
@@ -160,26 +159,22 @@ final class SignUpView: UIView {
             $0.width.equalTo(100)
         }
         
-        // stackView
         verticalStackView.snp.makeConstraints {
             $0.centerX.equalTo(safeAreaLayoutGuide)
             $0.width.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(titleLabel.snp.bottom)
         }
         
-        // id
         idLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
         
         id.snp.makeConstraints {
             $0.leading.equalToSuperview()
-            $0.width.equalToSuperview()
         }
         
         idRuleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
-            $0.width.equalToSuperview()
         }
         
         passwordLabel.snp.makeConstraints {
@@ -192,7 +187,6 @@ final class SignUpView: UIView {
         
         passwordRuleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
-            $0.width.equalToSuperview()
         }
         
         confirmPasswordLabel.snp.makeConstraints {

@@ -31,16 +31,28 @@ final class SignUpViewController: UIViewController {
     private func tapSignUpButton() {
         signUpView.signUpButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-//                self?.signUp()
+
+                if let validCheck = self?.isValidSignUp(), validCheck == true {
+                    self?.signUp()
+                }
                 
-                self?.isValidId()
             }).disposed(by: disposeBag)
+    }
+    
+    // MARK: 회원가입 검증
+    private func isValidSignUp() -> Bool {
+        if !isValidId() { return false }
+        if !isValidPassword() { return false }
+        if !isValidNickname() { return false }
+        
+        return true
     }
     
     // MARK: 아이디 검증
     private func isValidId() -> Bool{
-        
+        // 이메일 입력 체크
         guard let email = signUpView.id.text else {
+            print("이메일 비었음")
             return false
         }
         
@@ -70,9 +82,38 @@ final class SignUpViewController: UIViewController {
     
     // MARK: 비밀번호 검증
     private func isValidPassword() -> Bool {
+        // 비밀번호 입력 체크
+        guard let password = signUpView.password.text else {
+            print("비밀번호 비었음")
+            return false
+        }
+        
+        // 비밀번호 검증 : 8자 이상
+        guard password.count >= 8 else {
+            return false
+        }
+        
+        // 비밀번호 확인 입력 체크
+        guard let confirmPassword = signUpView.confirmPassword.text else {
+            print("비밀번호 확인 비었음")
+            return false
+        }
+        
+        // 비밀번호 & 비밀번호 확인 비교
+        guard password == confirmPassword else {
+            return false
+        }
+        
         return true
     }
 
-    
+    // MARK: 닉네임 검증
+    private func isValidNickname() -> Bool {
+        if signUpView.nickname.text == ""  {
+            return false
+        }
+        
+        return true
+    }
     
 }
