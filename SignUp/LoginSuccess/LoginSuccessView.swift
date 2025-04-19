@@ -40,9 +40,9 @@ final class LoginSuccessView: UIView {
     }()
     
     // MARK: initializer
-    init(name: String) {
+    init(nickname: String) {
         super.init(frame: .zero)
-        setUpTitle(name: name)
+        setUpTitle(nickname: nickname)
         setUp()
     }
     
@@ -52,7 +52,7 @@ final class LoginSuccessView: UIView {
     
     // MARK: UI 제약조건
     private func setUp() {
-        backgroundColor = .blue
+        backgroundColor = .white
         
         [titleLabel,
          logoutButton,
@@ -86,8 +86,8 @@ final class LoginSuccessView: UIView {
         }
     }
     
-    private func setUpTitle(name: String) {
-        titleLabel.text = "\(name)님 환영합니다."
+    private func setUpTitle(nickname: String) {
+        titleLabel.text = "\(nickname)님 환영합니다."
     }
     
 }

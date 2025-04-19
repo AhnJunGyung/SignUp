@@ -20,7 +20,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    private let idLabel: UILabel = {
+    private let emailLabel: UILabel = {
         let label = UILabel()
         label.text = "아이디"
         label.font = .systemFont(ofSize: 18)
@@ -28,7 +28,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    let id: UITextField = {
+    let email: UITextField = {
         let textField = UITextField()
         textField.placeholder = "아이디를 입력하세요"
         textField.font = .systemFont(ofSize: 14)
@@ -36,7 +36,7 @@ final class SignUpView: UIView {
         return textField
     }()
     
-    private let idRuleLabel: UILabel = {
+    private let emailRuleLabel: UILabel = {
         let label = UILabel()
         label.text = """
                      아이디 규칙
@@ -137,7 +137,7 @@ final class SignUpView: UIView {
     private func setUp(){
         backgroundColor = .white
         
-        [idLabel, id, idRuleLabel,
+        [emailLabel, email, emailRuleLabel,
          passwordLabel, password, passwordRuleLabel,
          confirmPasswordLabel, confirmPassword,
          nicknameLabel, nickname
@@ -165,15 +165,15 @@ final class SignUpView: UIView {
             $0.top.equalTo(titleLabel.snp.bottom)
         }
         
-        idLabel.snp.makeConstraints {
+        emailLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
         
-        id.snp.makeConstraints {
+        email.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
         
-        idRuleLabel.snp.makeConstraints {
+        emailRuleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
         
@@ -212,7 +212,7 @@ final class SignUpView: UIView {
             $0.height.equalTo(40)
         }
         
-        [id, nickname, password, confirmPassword]
+        [email, nickname, password, confirmPassword]
             .forEach {
                 $0.snp.makeConstraints {
                     $0.height.equalTo(40)

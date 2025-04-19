@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E76118EF2DB3CA100050FBC6 /* UserData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E76118ED2DB3CA100050FBC6 /* UserData.xcdatamodeld */; };
 		E7BEA8262DB21F4E00FBBD8C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E7BEA8252DB21F4E00FBBD8C /* SnapKit */; };
 		E7BEA8292DB2210D00FBBD8C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E7BEA8282DB2210D00FBBD8C /* RxCocoa */; };
 		E7BEA82B2DB2210D00FBBD8C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E7BEA82A2DB2210D00FBBD8C /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E76118EE2DB3CA100050FBC6 /* UserData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserData.xcdatamodel; sourceTree = "<group>"; };
 		E7BEA80C2DB21D8600FBBD8C /* SignUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -54,6 +56,7 @@
 		E7BEA8032DB21D8600FBBD8C = {
 			isa = PBXGroup;
 			children = (
+				E76118ED2DB3CA100050FBC6 /* UserData.xcdatamodeld */,
 				E7BEA80E2DB21D8600FBBD8C /* SignUp */,
 				E7BEA80D2DB21D8600FBBD8C /* Products */,
 			);
@@ -148,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E76118EF2DB3CA100050FBC6 /* UserData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,6 +394,19 @@
 			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		E76118ED2DB3CA100050FBC6 /* UserData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E76118EE2DB3CA100050FBC6 /* UserData.xcdatamodel */,
+			);
+			currentVersion = E76118EE2DB3CA100050FBC6 /* UserData.xcdatamodel */;
+			path = UserData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E7BEA8042DB21D8600FBBD8C /* Project object */;
 }

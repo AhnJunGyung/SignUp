@@ -60,8 +60,8 @@ final class MainViewController: UIViewController {
             let signUpVC = SignUpViewController()
             navigationController?.setViewControllers([signUpVC], animated: false)
         } else { // 회원
-            let loginSuccessVC = LoginSuccessViewController(name: "회원")
-            navigationController?.setViewControllers([loginSuccessVC], animated: false)
+//            let loginSuccessVC = LoginSuccessViewController(userData: )
+//            navigationController?.setViewControllers([loginSuccessVC], animated: false)
         }
     }
     

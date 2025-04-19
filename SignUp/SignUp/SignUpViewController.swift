@@ -23,7 +23,24 @@ final class SignUpViewController: UIViewController {
     
     // MARK: 회원가입
     private func signUp() {
-        let loginSuccessVC = LoginSuccessViewController(name: "회원")
+        
+        guard let email = signUpView.email.text else { return }
+        guard let password = signUpView.password.text else { return }
+        guard let nickname = signUpView.nickname.text else { return }
+        
+        let userData = UserData(email: email,
+                                password: password,
+                                nickname: nickname)
+        
+        let signUpDataService = SignUpDataService()
+        signUpDataService.saveUser(userData: userData)
+        
+        loginSuccess(userdata: userData)
+    }
+    
+    // MARK: 로그인 성공화면 이동
+    private func loginSuccess(userdata: UserData) {
+        let loginSuccessVC = LoginSuccessViewController(userData: userdata)
         navigationController?.setViewControllers([loginSuccessVC], animated: false)
     }
     
@@ -51,7 +68,7 @@ final class SignUpViewController: UIViewController {
     // MARK: 아이디 검증
     private func isValidId() -> Bool{
         // 이메일 입력 체크
-        guard let email = signUpView.id.text else {
+        guard let email = signUpView.email.text else {
             print("이메일 비었음")
             return false
         }
