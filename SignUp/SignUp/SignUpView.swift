@@ -16,14 +16,14 @@ final class SignUpView: UIView {
         label.text = "회원가입"
         label.textColor = .black
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 24)
         return label
     }()
     
     private let idLabel: UILabel = {
         let label = UILabel()
         label.text = "아이디"
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 18)
         label.textColor = .black
         return label
     }()
@@ -36,10 +36,24 @@ final class SignUpView: UIView {
         return textField
     }()
     
+    private let idRuleLabel: UILabel = {
+        let label = UILabel()
+        label.text = """
+                     아이디 규칙
+                     - 이메일 형식(이메일 영역 제외 6~20자)
+                     - 영문 소문자(a-z)와 숫자(0-9)만 허용
+                     - 영문자로 시작
+                    """
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        label.numberOfLines = 0
+        return label
+    }()
+    
     private let passwordLabel: UILabel = {
         let label = UILabel()
         label.text = "비밀번호"
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
@@ -51,10 +65,19 @@ final class SignUpView: UIView {
         return textField
     }()
     
+    private let passwordRuleLabel: UILabel = {
+        let label = UILabel()
+        label.text = " 비밀번호 규칙 : 최소 8자 이상"
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        label.numberOfLines = 0
+        return label
+    }()
+    
     private let confirmPasswordLabel: UILabel = {
         let label = UILabel()
         label.text = "비밀번호 확인"
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
@@ -69,7 +92,7 @@ final class SignUpView: UIView {
     private let nicknameLabel: UILabel = {
         let label = UILabel()
         label.text = "닉네임"
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
@@ -94,7 +117,8 @@ final class SignUpView: UIView {
     private let verticalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
+        stackView.spacing = 8
         return stackView
     }()
     
@@ -113,8 +137,8 @@ final class SignUpView: UIView {
     private func setUp(){
         backgroundColor = .white
         
-        [idLabel, id,
-         passwordLabel, password,
+        [idLabel, id, idRuleLabel,
+         passwordLabel, password, passwordRuleLabel,
          confirmPasswordLabel, confirmPassword,
          nicknameLabel, nickname
         ].forEach {
@@ -141,7 +165,6 @@ final class SignUpView: UIView {
             $0.centerX.equalTo(safeAreaLayoutGuide)
             $0.width.equalTo(safeAreaLayoutGuide).inset(20)
             $0.top.equalTo(titleLabel.snp.bottom)
-            $0.height.equalTo(300)
         }
         
         // id
@@ -154,7 +177,11 @@ final class SignUpView: UIView {
             $0.width.equalToSuperview()
         }
         
-        // password
+        idRuleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
         passwordLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
@@ -163,7 +190,11 @@ final class SignUpView: UIView {
             $0.leading.equalToSuperview()
         }
         
-        // confirmPassword
+        passwordRuleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
         confirmPasswordLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
@@ -172,7 +203,6 @@ final class SignUpView: UIView {
             $0.leading.equalToSuperview()
         }
         
-        // nickname
         nicknameLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
         }
@@ -181,13 +211,19 @@ final class SignUpView: UIView {
             $0.leading.equalToSuperview()
         }
         
-        // signUpButton
         signUpButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(150)
             $0.width.equalTo(140)
             $0.height.equalTo(40)
         }
+        
+        [id, nickname, password, confirmPassword]
+            .forEach {
+                $0.snp.makeConstraints {
+                    $0.height.equalTo(40)
+                }
+            }
     }
     
 }

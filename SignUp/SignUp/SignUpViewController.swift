@@ -31,7 +31,10 @@ final class SignUpViewController: UIViewController {
     private func tapSignUpButton() {
         signUpView.signUpButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.signUp()
+//                self?.signUp()
+                print("회원가입 탭")
             }).disposed(by: disposeBag)
     }
+    
+    
 }
