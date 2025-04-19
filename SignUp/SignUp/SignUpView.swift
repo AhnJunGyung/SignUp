@@ -28,7 +28,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    private let id: UITextField = {
+    let id: UITextField = {
         let textField = UITextField()
         textField.placeholder = "아이디를 입력하세요"
         textField.font = .systemFont(ofSize: 14)
@@ -57,7 +57,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    private let password: UITextField = {
+    let password: UITextField = {
         let textField = UITextField()
         textField.placeholder = "비밀번호를 입력하세요"
         textField.font = .systemFont(ofSize: 14)
@@ -81,7 +81,7 @@ final class SignUpView: UIView {
         return label
     }()
     
-    private let confirmPassword: UITextField = {
+    let confirmPassword: UITextField = {
         let textField = UITextField()
         textField.placeholder = "비밀번호 확인"
         textField.font = .systemFont(ofSize: 14)
