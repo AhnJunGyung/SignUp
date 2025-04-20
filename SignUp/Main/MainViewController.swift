@@ -10,24 +10,23 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+enum Status {
+    case guest
+    case member(userData: UserData)
+}
+
 final class MainViewController: UIViewController {
     
     private let mainView = MainView()
     private let disposeBag = DisposeBag()
+    private var isMember: Status = .guest
         
     // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view = mainView
+        isAuthenticated()
         tapButton()
-        
-        //회원정보 조회 테스트
-        let coreDataService = UserDataService()
-        let allUsers = coreDataService.fetchAllUsers()
-
-        for user in allUsers {
-            print("📧 Email: \(user.email), 🧑‍💼 Nickname: \(user.nickname)")
-        }
     }
     
     // MARK: 버튼 탭 동작
@@ -35,20 +34,25 @@ final class MainViewController: UIViewController {
         mainView.startButton.rx
             .tap
             .subscribe(onNext: { [weak self] _ in
-                self?.isAuthenticated()
+                switch self?.isMember {
+                case .guest:
+                    let signUpVC = SignUpViewController()
+                    self?.navigationController?.setViewControllers([signUpVC], animated: false)
+                case .member(let userData):
+                    let loginSuccessVC = LoginSuccessViewController(userData: userData)
+                    self?.navigationController?.setViewControllers([loginSuccessVC], animated: false)
+                case .none: break
+                }
             }).disposed(by: disposeBag)
     }
     
-    // TODO: 회원/비회원 판단 -> 로그인정보 UserDefaults
+    // MARK: 회원/비회원 판별
     private func isAuthenticated() {
-        if true { // 비회원
-            let signUpVC = SignUpViewController()
-            navigationController?.setViewControllers([signUpVC], animated: false)
-        } else { // 회원
-//            let loginSuccessVC = LoginSuccessViewController(userData: )
-//            navigationController?.setViewControllers([loginSuccessVC], animated: false)
+        let userDefaults = LoginUserDefaultsService()
+        
+        if let userData = userDefaults.loadUserData() {
+            self.isMember = Status.member(userData: userData)
         }
-    }
-    
+    }    
 }
 

@@ -107,7 +107,7 @@ final class SignUpView: UIView {
     let signUpButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("회원가입", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18)
+        button.titleLabel?.font = .systemFont(ofSize: 22)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
@@ -119,9 +119,12 @@ final class SignUpView: UIView {
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.spacing = 8
+        stackView.alignment = .fill
         return stackView
     }()
     
+    // 토스트 뷰
+    let toastMessageView = ToastMessageView()
     
     // MARK: initializer
     override init(frame: CGRect) {
@@ -147,7 +150,8 @@ final class SignUpView: UIView {
         
         [titleLabel,
          verticalStackView,
-         signUpButton
+         signUpButton,
+         toastMessageView
         ].forEach {
             addSubview($0)
         }
@@ -162,7 +166,8 @@ final class SignUpView: UIView {
         verticalStackView.snp.makeConstraints {
             $0.centerX.equalTo(safeAreaLayoutGuide)
             $0.width.equalTo(safeAreaLayoutGuide).inset(20)
-            $0.top.equalTo(titleLabel.snp.bottom)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.bottom.lessThanOrEqualTo(signUpButton.snp.top).offset(-20)
         }
         
         emailLabel.snp.makeConstraints {
@@ -207,9 +212,9 @@ final class SignUpView: UIView {
         
         signUpButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(150)
-            $0.width.equalTo(140)
-            $0.height.equalTo(40)
+            $0.bottom.equalToSuperview().inset(40)
+            $0.width.equalTo(160)
+            $0.height.equalTo(50)
         }
         
         [email, nickname, password, confirmPassword]
@@ -218,6 +223,13 @@ final class SignUpView: UIView {
                     $0.height.equalTo(40)
                 }
             }
+        
+        toastMessageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(signUpButton.snp.top).offset(-30)
+            $0.width.lessThanOrEqualToSuperview().inset(40)
+            $0.height.greaterThanOrEqualTo(40)
+        }
     }
     
 }

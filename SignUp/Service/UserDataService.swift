@@ -25,7 +25,7 @@ final class UserDataService {
         }
     }
     
-    // MARK: Save UserData
+    // MARK: 저장
     func saveUser(userData: UserData) {
         let user = UserEntity(context: context)
         user.email = userData.email
@@ -39,7 +39,7 @@ final class UserDataService {
         }
     }
     
-    // MARK: Fetch UserData
+    // MARK: 조회
     func fetchUser(email: String) -> UserData? {
         let request = UserEntity.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@", email)
@@ -60,7 +60,7 @@ final class UserDataService {
         return nil
     }
     
-    // MARK: Delete UserData
+    // MARK: 삭제
     func deleteUser(email: String) {
         
         let request = UserEntity.fetchRequest()
@@ -77,21 +77,19 @@ final class UserDataService {
         }
     }
     
-    func fetchAllUsers() -> [UserData] {
-        let fetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+    // MARK: 이메일 중복 체크
+    func isExisitingUser(email: String) -> Bool {
         
+        let request = UserEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "email == %@", email)
+        request.fetchLimit = 1
+
         do {
-            let results = try context.fetch(fetchRequest)
-            return results.map { entity in
-                UserData(
-                    email: entity.email ?? "",
-                    password: entity.password ?? "",
-                    nickname: entity.nickname ?? ""
-                )
-            }
+            let count = try context.count(for: request)
+            return count > 0
         } catch {
-            print("❌ Failed to fetch users: \(error)")
-            return []
+            print(error.localizedDescription)
+            return false
         }
     }
 }

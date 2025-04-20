@@ -19,7 +19,42 @@ final class SignUpViewController: UIViewController {
         super.viewDidLoad()
         view = signUpView
         tapSignUpButton()
+        updateSignUpButtonState()
     }
+}
+
+// MARK: 메서드
+extension SignUpViewController {
+    
+    // MARK: 회원가입 버튼 상태 업데이트
+    private func updateSignUpButtonState() {
+        let allFieldsFilled = Observable
+            .combineLatest(
+                signUpView.email.rx.text.orEmpty,
+                signUpView.password.rx.text.orEmpty,
+                signUpView.confirmPassword.rx.text.orEmpty,
+                signUpView.nickname.rx.text.orEmpty
+            )
+            .map { email, password, confirmPassword, nickname in
+                return !email.isEmpty &&
+                       !password.isEmpty &&
+                       !confirmPassword.isEmpty &&
+                       !nickname.isEmpty
+            }
+            .distinctUntilChanged()
+        
+        // 버튼 활성/비활성 상태 바인딩
+        allFieldsFilled
+            .bind(to: signUpView.signUpButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        // 버튼 비활성화시 흐리게
+        allFieldsFilled
+            .map { $0 ? 1.0 : 0.5 }
+            .bind(to: signUpView.signUpButton.rx.alpha)
+            .disposed(by: disposeBag)
+    }
+
     
     // MARK: 회원가입
     private func signUp() {
@@ -32,8 +67,13 @@ final class SignUpViewController: UIViewController {
                                 password: password,
                                 nickname: nickname)
         
+        // CoreData 저장
         let userDataService = UserDataService()
         userDataService.saveUser(userData: userData)
+        
+        // UserDefaults 저장
+        let loginUserDefaultsService = LoginUserDefaultsService()
+        loginUserDefaultsService.saveUserData(userData: userData)
         
         loginSuccess(userdata: userData)
     }
@@ -47,6 +87,7 @@ final class SignUpViewController: UIViewController {
     // MARK: 회원가입 버튼 탭
     private func tapSignUpButton() {
         signUpView.signUpButton.rx.tap
+            .throttle(.seconds(3), scheduler: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] _ in
 
                 if let validCheck = self?.isValidSignUp(), validCheck == true {
@@ -60,21 +101,19 @@ final class SignUpViewController: UIViewController {
     private func isValidSignUp() -> Bool {
         if !isValidId() { return false }
         if !isValidPassword() { return false }
-        if !isValidNickname() { return false }
-        
         return true
     }
     
     // MARK: 아이디 검증
     private func isValidId() -> Bool{
-        // 이메일 입력 체크
+        
         guard let email = signUpView.email.text else {
-            print("이메일 비었음")
             return false
         }
         
         // 이메일 형식 검증
         guard email.contains("@"), let atIndex = email.firstIndex(of: "@") else {
+            signUpView.toastMessageView.showToastMessage("이메일 형식인지 확인하세요.")
             return false
         }
         
@@ -82,15 +121,25 @@ final class SignUpViewController: UIViewController {
         
         // 아이디 6자~20자
         guard id.count >= 6 && id.count <= 20 else {
+            signUpView.toastMessageView.showToastMessage("아이디 글자수를 확인하세요.")
             return false
         }
         
-        // 정규표현식 : 영어 소문자 시작, 숫자 포함 6~20자
+        // 정규표현식 : 영문 소문자 시작, 숫자 포함 6~20자
         let regexOfId = "^[a-z][a-z0-9]{5,19}$"
         
         let predicate = NSPredicate(format: "SELF MATCHES %@", regexOfId)
         
         guard predicate.evaluate(with: String(id)) else {
+            signUpView.toastMessageView.showToastMessage("아이디 생성 규칙을 확인하세요.")
+            return false
+        }
+        
+        // 아이디 중복 체크
+        let userDataService = UserDataService()
+        print(userDataService.isExisitingUser(email: email))
+        if userDataService.isExisitingUser(email: email) {
+            signUpView.toastMessageView.showToastMessage("존재하는 아이디가 있습니다.")
             return false
         }
         
@@ -99,38 +148,27 @@ final class SignUpViewController: UIViewController {
     
     // MARK: 비밀번호 검증
     private func isValidPassword() -> Bool {
-        // 비밀번호 입력 체크
+        
         guard let password = signUpView.password.text else {
-            print("비밀번호 비었음")
             return false
         }
         
         // 비밀번호 검증 : 8자 이상
         guard password.count >= 8 else {
+            signUpView.toastMessageView.showToastMessage("비밀번호를 8자 이상 입력하세요.")
             return false
         }
         
-        // 비밀번호 확인 입력 체크
         guard let confirmPassword = signUpView.confirmPassword.text else {
-            print("비밀번호 확인 비었음")
             return false
         }
         
         // 비밀번호 & 비밀번호 확인 비교
         guard password == confirmPassword else {
+            signUpView.toastMessageView.showToastMessage("비밀번호가 일치하지 않습니다.")
             return false
         }
         
         return true
     }
-
-    // MARK: 닉네임 검증
-    private func isValidNickname() -> Bool {
-        if signUpView.nickname.text == ""  {
-            return false
-        }
-        
-        return true
-    }
-    
 }

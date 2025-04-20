@@ -22,7 +22,7 @@ final class LoginSuccessView: UIView {
     let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("로그아웃", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18)
+        button.titleLabel?.font = .systemFont(ofSize: 22)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
@@ -32,7 +32,7 @@ final class LoginSuccessView: UIView {
     let withdrawButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("회원탈퇴", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18)
+        button.titleLabel?.font = .systemFont(ofSize: 22)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
@@ -73,16 +73,16 @@ final class LoginSuccessView: UIView {
         logoutButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(150)
             $0.trailing.equalTo(self.snp.centerX).offset(-20)
-            $0.width.equalTo(140)
-            $0.height.equalTo(40)
+            $0.width.equalTo(160)
+            $0.height.equalTo(50)
         }
 
         // resignButton
         withdrawButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(150)
             $0.leading.equalTo(self.snp.centerX).offset(20)
-            $0.width.equalTo(140)
-            $0.height.equalTo(40)
+            $0.width.equalTo(160)
+            $0.height.equalTo(50)
         }
     }
     

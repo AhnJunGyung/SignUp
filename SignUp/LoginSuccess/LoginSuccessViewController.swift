@@ -13,6 +13,7 @@ final class LoginSuccessViewController: UIViewController {
     
     private let loginSuccessView: LoginSuccessView?
     private let loginUser: UserData?
+    private let loginUserDefaultsService = LoginUserDefaultsService()
     private let disposeBag = DisposeBag()
     
     // MARK: initializer
@@ -20,11 +21,6 @@ final class LoginSuccessViewController: UIViewController {
         self.loginUser = userData
         loginSuccessView = LoginSuccessView(nickname: userData.nickname)
         super.init(nibName: nil, bundle: nil)
-        
-        //fetch 테스트
-        let dataService = UserDataService()
-        let user = dataService.fetchUser(email: userData.email)
-        print(user!)
     }
     
     required init?(coder: NSCoder) {
@@ -44,14 +40,8 @@ final class LoginSuccessViewController: UIViewController {
         loginSuccessView?.logoutButton.rx
             .tap
             .subscribe(onNext: { [weak self] in
-                self?.logout()
+                self?.navigateToMain()
             }).disposed(by: disposeBag)
-    }
-    
-    // MARK: 로그아웃
-    private func logout() {
-        let mainVC = MainViewController()
-        navigationController?.setViewControllers([mainVC], animated: false)
     }
     
     // MARK: 회원탈퇴 버튼 탭
@@ -59,19 +49,30 @@ final class LoginSuccessViewController: UIViewController {
         loginSuccessView?.withdrawButton.rx
             .tap
             .subscribe(onNext: { [weak self] in
-                self?.withdraw()
+                self?.withdrawUser()
+                self?.navigateToMain()
             }).disposed(by: disposeBag)
     }
     
     // MARK: 회원탈퇴
-    private func withdraw() {
+    private func withdrawUser() {
         let userDataService = UserDataService()
         
         guard let email = loginUser?.email else {
             return
         }
         
+        // CoreDate 삭제
         userDataService.deleteUser(email: email)
+        
+        // UserDefaults 삭제
+        loginUserDefaultsService.deleteUser()
+    }
+    
+    // MARK:
+    private func navigateToMain() {
+        let mainVC = MainViewController()
+        navigationController?.setViewControllers([mainVC], animated: false)
     }
     
 }
